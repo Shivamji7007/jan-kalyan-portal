@@ -53,6 +53,15 @@ st.markdown("""
         color: #4a5568;
         margin: 10px 0;
     }
+    .landing-box {
+        background-color: #f8fafc;
+        border: 1px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        color: #64748b;
+        margin-top: 15px;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -65,7 +74,7 @@ SCHEME_DATABASE = [
         "max_annual_income": 250000,
         "target_group": "student",
         "benefit": "100% Tuition Fee Waiver + Up to Rs 12,000 Annual Stipend",
-        "docs": "Aadhaar Card, Cast Certificate, Income Certificate, College Fee Receipt",
+        "docs": "Aadhaar Card, Caste Certificate, Income Certificate, College Fee Receipt",
         "portal": "https://scholarship.up.gov.in"
     },
     {
@@ -129,7 +138,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Layout: 2 Columns (Form on left, live tips on right)
+# Layout: 2 Columns (Form on left, live notices on right)
 col_form, col_info = st.columns([2, 1], gap="medium")
 
 with col_form:
@@ -173,8 +182,8 @@ with col_info:
 
 st.write("---")
 
-# Execution & Matching Engine
-if search_clicked or True:
+# Execution & Matching Engine (Only runs when button is clicked)
+if search_clicked:
     try:
         income = float(income_text.strip().replace(",", ""))
     except ValueError:
@@ -218,10 +227,18 @@ if search_clicked or True:
 
             c_link, c_help = st.columns([1, 1])
             with c_link:
-                st.link_button(f"Apply on Official Portal ↗", item["portal"], use_container_width=True)
+                st.link_button("Apply on Official Portal ↗", item["portal"], use_container_width=True)
             with c_help:
-                # Direct Assisted Apply CTA via WhatsApp
+                # Agar aapko apne personal number par inquiries leni hain, toh 'wa.me/' ke aage apna 10 digit number add kar sakte hain
                 whatsapp_url = f"https://wa.me/?text=Hello%20I%20need%20assistance%20applying%20for%20{item['name'].replace(' ', '%20')}"
                 st.link_button("Get Form Fill Assistance (Jan Seva) 💬", whatsapp_url, use_container_width=True)
 
             st.write("")
+else:
+    # State before user clicks search
+    st.markdown("""
+    <div class="landing-box">
+        <h3>🔍 Select citizen details above and click 'Check Scheme Eligibility'</h3>
+        <p>The system will filter official state & central welfare schemes based on income caps and beneficiary categories.</p>
+    </div>
+    """, unsafe_allow_html=True)
